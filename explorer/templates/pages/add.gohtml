@@ -1,0 +1,16 @@
+{{define "add"}}
+    <!DOCTYPE html>
+    <html lang="ko">
+    {{template "head" "Add"}}
+    <body>
+    {{template "header" "Add"}}
+    <main>
+        <form method="post">
+            <input type="text" name="blockData" placeholder="Data for your block" required>
+            <button>Add Block</button>
+        </form>
+    </main>
+    {{template "footer" .}}
+    </body>
+    </html>
+{{end}}

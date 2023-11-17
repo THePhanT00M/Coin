@@ -1,0 +1,1 @@
+module github.com/THePhanT00M/Coin
