@@ -4,10 +4,13 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"sync"
+	"time"
 )
 
 type Block struct {
 	Data       string
+	Timestamp  int
+	BlockTime  time.Time
 	Hash       string
 	ParentHash string
 }
@@ -32,14 +35,16 @@ func getLastHash() string {
 	return GetBlockchain().blocks[totalBlocks-1].Hash
 }
 
-func createBlock(data string) *Block {
-	newBlock := Block{data, "", getLastHash()}
+func createBlock(data string, timestamp int, blocktime time.Time) *Block {
+	newBlock := Block{data, timestamp, blocktime, "", getLastHash()}
 	newBlock.calculateHash()
 	return &newBlock
 }
 
 func (b *blockchain) AddBlock(data string) {
-	b.blocks = append(b.blocks, createBlock(data))
+	blocktime := time.Now()
+	timestamp := blocktime.Unix()
+	b.blocks = append(b.blocks, createBlock(data, int(timestamp), blocktime))
 }
 
 func GetBlockchain() *blockchain {
