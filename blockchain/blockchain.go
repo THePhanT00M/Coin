@@ -2,17 +2,19 @@ package blockchain
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
 )
 
 type Block struct {
-	Data       string
-	Timestamp  int
-	BlockTime  time.Time
-	Hash       string
-	ParentHash string
+	Data       string    `json:"data"`
+	Timestamp  int       `json:"timestamp"`
+	BlockTime  time.Time `json:"blockTime"`
+	Hash       string    `json:"hash"`
+	ParentHash string    `json:"parentHash,omitempty"`
+	Height     int       `json:"height"`
 }
 
 type blockchain struct {
@@ -36,7 +38,7 @@ func getLastHash() string {
 }
 
 func createBlock(data string, timestamp int, blocktime time.Time) *Block {
-	newBlock := Block{data, timestamp, blocktime, "", getLastHash()}
+	newBlock := Block{data, timestamp, blocktime, "", getLastHash(), len(GetBlockchain().blocks) + 1}
 	newBlock.calculateHash()
 	return &newBlock
 }
@@ -59,4 +61,14 @@ func GetBlockchain() *blockchain {
 
 func (b *blockchain) AllBlocks() []*Block {
 	return b.blocks
+}
+
+var ErrNotFound = errors.New("block not found")
+
+func (b *blockchain) GetBlock(height int) (*Block, error) {
+	if height > len(b.blocks) {
+		return nil, ErrNotFound
+	}
+
+	return b.blocks[height-1], nil
 }
