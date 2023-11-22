@@ -2,14 +2,15 @@ package explorer
 
 import (
 	"fmt"
-	"github.com/THePhanT00M/Coin/blockchain"
 	"log"
 	"net/http"
 	"text/template"
+
+	"github.com/THePhanT00M/Coin/blockchain"
 )
 
 const (
-	templateDor string = "explorer/templates/"
+	templateDir string = "explorer/templates/"
 )
 
 var templates *template.Template
@@ -20,7 +21,7 @@ type homeData struct {
 }
 
 func home(rw http.ResponseWriter, r *http.Request) {
-	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
+	data := homeData{"Home", nil}
 	templates.ExecuteTemplate(rw, "home", data)
 }
 
@@ -28,19 +29,18 @@ func add(rw http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
 		templates.ExecuteTemplate(rw, "add", nil)
-		break
 	case "POST":
 		r.ParseForm()
 		data := r.Form.Get("blockData")
-		blockchain.GetBlockchain().AddBlock(data)
+		blockchain.Blockchain().AddBlock(data)
 		http.Redirect(rw, r, "/", http.StatusPermanentRedirect)
 	}
 }
 
 func Start(port int) {
 	handler := http.NewServeMux()
-	templates = template.Must(template.ParseGlob(templateDor + "pages/*.gohtml"))
-	templates = template.Must(templates.ParseGlob(templateDor + "partials/*.gohtml"))
+	templates = template.Must(template.ParseGlob(templateDir + "pages/*.gohtml"))
+	templates = template.Must(templates.ParseGlob(templateDir + "partials/*.gohtml"))
 	handler.HandleFunc("/", home)
 	handler.HandleFunc("/add", add)
 	fmt.Printf("Listening on http://localhost:%d\n", port)

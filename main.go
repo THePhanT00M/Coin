@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/THePhanT00M/Coin/explorer"
-	"github.com/THePhanT00M/Coin/rest"
+	"github.com/THePhanT00M/Coin/cli"
+	"github.com/THePhanT00M/Coin/db"
 )
 
 func main() {
-	go explorer.Start(3000)
-	rest.Start(4000)
+	defer db.Close()
+	cli.Start()
 }
