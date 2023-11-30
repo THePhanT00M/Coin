@@ -3,10 +3,11 @@ package blockchain
 import (
 	"errors"
 	"fmt"
-	"github.com/THePhanT00M/Coin/db"
-	"github.com/THePhanT00M/Coin/utils"
 	"strings"
 	"time"
+
+	"github.com/THePhanT00M/Coin/db"
+	"github.com/THePhanT00M/Coin/utils"
 )
 
 type Block struct {
@@ -56,12 +57,11 @@ func (b *Block) mine() {
 
 func createBlock(ParentHash string, height int) *Block {
 	block := &Block{
-		Hash:         "",
-		ParentHash:   ParentHash,
-		Height:       height,
-		Difficulty:   Blockchain().difficulty(),
-		Nonce:        0,
-		Transactions: []*Tx{makeCoinbaseTx("sample")},
+		Hash:       "",
+		ParentHash: ParentHash,
+		Height:     height,
+		Difficulty: Blockchain().difficulty(),
+		Nonce:      0,
 	}
 	block.mine()
 	block.persist()
