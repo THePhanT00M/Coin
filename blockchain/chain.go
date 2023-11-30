@@ -60,10 +60,9 @@ func (b *blockchain) recalculateDifficulty() int {
 	lastRecalculatedBlock := allBlocks[difficultyInterval-1]
 	actualTime := (newestBlock.Timestamp / 60) - (lastRecalculatedBlock.Timestamp / 60)
 	expectedTime := difficultyInterval * blockInterval
-
-	if actualTime < (expectedTime - allowedRange) {
+	if actualTime <= (expectedTime - allowedRange) {
 		return b.CurrentDifficulty + 1
-	} else if actualTime > (expectedTime + allowedRange) {
+	} else if actualTime >= (expectedTime + allowedRange) {
 		return b.CurrentDifficulty - 1
 	}
 	return b.CurrentDifficulty
@@ -100,7 +99,6 @@ func (b *blockchain) TxOutsByAddress(address string) []*TxOut {
 			ownedTxOuts = append(ownedTxOuts, txOut)
 		}
 	}
-
 	return ownedTxOuts
 }
 
@@ -110,7 +108,6 @@ func (b *blockchain) BalanceByAddress(address string) int {
 	for _, txOut := range txOuts {
 		amount += txOut.Amount
 	}
-
 	return amount
 }
 

@@ -75,13 +75,13 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 			Description: "Get TxOuts for an Address",
 		},
 	}
-	json.NewEncoder(rw).Encode(data)
+	utils.HandleErr(json.NewEncoder(rw).Encode(data))
 }
 
 func blocks(rw http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "GET":
-		json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks())
+		utils.HandleErr(json.NewEncoder(rw).Encode(blockchain.Blockchain().Blocks()))
 	case "POST":
 		blockchain.Blockchain().AddBlock()
 		rw.WriteHeader(http.StatusCreated)
@@ -94,10 +94,14 @@ func block(rw http.ResponseWriter, r *http.Request) {
 	block, err := blockchain.FindBlock(hash)
 	encoder := json.NewEncoder(rw)
 	if err == blockchain.ErrNotFound {
-		encoder.Encode(errorResponse{fmt.Sprint(err)})
+		utils.HandleErr(encoder.Encode(errorResponse{fmt.Sprint(err)}))
 	} else {
-		encoder.Encode(block)
+		utils.HandleErr(encoder.Encode(block))
 	}
+}
+
+func status(rw http.ResponseWriter, r *http.Request) {
+	utils.HandleErr(json.NewEncoder(rw).Encode(blockchain.Blockchain()))
 }
 
 func jsonContentTypeMiddleware(next http.Handler) http.Handler {
@@ -105,10 +109,6 @@ func jsonContentTypeMiddleware(next http.Handler) http.Handler {
 		rw.Header().Add("Content-Type", "application/json")
 		next.ServeHTTP(rw, r)
 	})
-}
-
-func status(rw http.ResponseWriter, r *http.Request) {
-	utils.HandleErr(json.NewEncoder(rw).Encode(blockchain.Blockchain()))
 }
 
 func balance(rw http.ResponseWriter, r *http.Request) {

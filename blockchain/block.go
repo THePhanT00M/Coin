@@ -45,7 +45,7 @@ func (b *Block) mine() {
 	for {
 		b.Timestamp = int(time.Now().Unix())
 		hash := utils.Hash(b)
-		fmt.Printf("Target:%s\nHash:%s\nNonce:%d", target, hash, b.Nonce)
+		fmt.Printf("\n\n\nTarget:%s\nHash:%s\nNonce:%d\n\n\n", target, hash, b.Nonce)
 		if strings.HasPrefix(hash, target) {
 			b.Hash = hash
 			break
@@ -55,13 +55,14 @@ func (b *Block) mine() {
 	}
 }
 
-func createBlock(ParentHash string, height int) *Block {
+func createBlock(parentHash string, height int) *Block {
 	block := &Block{
-		Hash:       "",
-		ParentHash: ParentHash,
-		Height:     height,
-		Difficulty: Blockchain().difficulty(),
-		Nonce:      0,
+		Hash:         "",
+		ParentHash:   parentHash,
+		Height:       height,
+		Difficulty:   Blockchain().difficulty(),
+		Nonce:        0,
+		Transactions: []*Tx{makeCoinbaseTx("nico")},
 	}
 	block.mine()
 	block.persist()

@@ -2,8 +2,9 @@ package blockchain
 
 import (
 	"errors"
-	"github.com/THePhanT00M/Coin/utils"
 	"time"
+
+	"github.com/THePhanT00M/Coin/utils"
 )
 
 const (
