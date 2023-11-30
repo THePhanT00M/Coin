@@ -55,16 +55,16 @@ func (b *Block) mine() {
 	}
 }
 
-func createBlock(parentHash string, height int) *Block {
+func createBlock(parentHash string, height int, diff int) *Block {
 	block := &Block{
 		Hash:       "",
 		ParentHash: parentHash,
 		Height:     height,
-		Difficulty: Blockchain().difficulty(),
+		Difficulty: diff,
 		Nonce:      0,
 	}
 	block.mine()
-	block.Transactions = Mempool.txToConfirm()
+	block.Transactions = Mempool.TxToConfirm()
 	block.persist()
 	return block
 }
