@@ -17,6 +17,6 @@ POST http://localhost:4000/transactions
 ###
 http://localhost:4000/mempool
 ###
-http://localhost:4000/balance/lynn
+http://localhost:4000/balance/442627edab48c22964b511a38f8531879bc60e831f61979bd5a2c0ca0449ee80e5ddf95b2ce9ba7526e93a571d4fc9833b229c16a4e4605a81fe291f67d519ae
 ###
-http://localhost:4000/balance/nico?total=true
+http://localhost:4000/balance/442627edab48c22964b511a38f8531879bc60e831f61979bd5a2c0ca0449ee80e5ddf95b2ce9ba7526e93a571d4fc9833b229c16a4e4605a81fe291f67d519ae?total=true
